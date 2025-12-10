@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "SeniorSmartAssist",
+    "slug": "seniorsmartassist",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/elderassist_logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/elderassist_logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#4CAF50"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.eldersmartassist.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/elderassist_logo.png",
+        "backgroundColor": "#4CAF50"
+      },
+      "package": "com.eldersmartassist.app"
+    },
+    "web": {
+      "favicon": "./assets/elderassist_logo.png",
+      "bundler": "metro"
+    }
+  }
+}
