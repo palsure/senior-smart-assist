@@ -1,0 +1,1039 @@
+{
+	"info": {
+		"_postman_id": "seniorsmartassist-api-collection",
+		"name": "SeniorSmartAssist API",
+		"description": "API collection for SeniorSmartAssist real-time volunteer assignment system",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register Elder",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {"mode": "raw", "raw": "{\n  \"name\": \"Mary Johnson\",\n  \"email\": \"mary@example.com\",\n  \"phone\": \"555-0201\",\n  \"address\": \"123 Oak St, San Francisco, CA\",\n  \"age\": 72\n}"},
+				"url": {"raw": "{{base_url}}/api/seniorsmartassist/register/elder", "host": ["{{base_url}}"], "path": ["api", "elderassist", "register", "elder"]}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Volunteer",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {"mode": "raw", "raw": "{\n  \"name\": \"Alice Chen\",\n  \"email\": \"alice@example.com\",\n  \"phone\": \"555-0101\",\n  \"address\": \"456 Elm St, San Francisco, CA\"\n}"},
+				"url": {"raw": "{{base_url}}/api/seniorsmartassist/register/volunteer", "host": ["{{base_url}}"], "path": ["api", "elderassist", "register", "volunteer"]}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Elder",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {"mode": "raw", "raw": "{\n  \"email\": \"mary@example.com\"\n}"},
+				"url": {"raw": "{{base_url}}/api/seniorsmartassist/login/elder", "host": ["{{base_url}}"], "path": ["api", "elderassist", "login", "elder"]}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Volunteer",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {"mode": "raw", "raw": "{\n  \"email\": \"alice@example.com\"\n}"},
+				"url": {"raw": "{{base_url}}/api/seniorsmartassist/login/volunteer", "host": ["{{base_url}}"], "path": ["api", "elderassist", "login", "volunteer"]}
+			},
+			"response": []
+		},
+		{
+			"name": "Help Requests",
+			"item": [
+				{
+					"name": "Get All Requests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/seniorsmartassist/requests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"elderassist",
+								"requests"
+							]
+						},
+						"description": "Retrieve all help requests from the system"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/seniorsmartassist/requests",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"elderassist",
+										"requests"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 1,\n    \"type\": \"groceries\",\n    \"status\": \"pending\",\n    \"lat\": 37.7749,\n    \"lng\": -122.4194\n  }\n]"
+						}
+					]
+				},
+				{
+					"name": "Add Help Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"groceries\",\n  \"lat\": 37.7749,\n  \"lng\": -122.4194\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/seniorsmartassist/request",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"elderassist",
+								"request"
+							]
+						},
+						"description": "Create a new help request with type and location"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"groceries\",\n  \"lat\": 37.7749,\n  \"lng\": -122.4194\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/seniorsmartassist/request",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"elderassist",
+										"request"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 1,\n  \"status\": \"pending\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Assign Volunteer to Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"volunteer_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/seniorsmartassist/request/1/assign",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"elderassist",
+								"request",
+								"1",
+								"assign"
+							]
+						},
+						"description": "Assign a volunteer to a help request. Sets status to 'assigned' and records assigned_at timestamp."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"volunteer_id\": 1\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/seniorsmartassist/request/1/assign",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"elderassist",
+										"request",
+										"1",
+										"assign"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 1,\n  \"status\": \"assigned\",\n  \"volunteer_id\": 1,\n  \"volunteer_name\": \"Alice Chen\",\n  \"assigned_at\": \"2025-01-18T20:00:00\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Request Status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"in_progress\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/seniorsmartassist/request/1/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"elderassist",
+								"request",
+								"1",
+								"status"
+							]
+						},
+						"description": "Update the status of a help request. Valid statuses: pending, assigned, in_progress, completed, cancelled. Sets completed_at timestamp when status is 'completed'."
+					},
+					"response": [
+						{
+							"name": "Success Response - Completed",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"status\": \"completed\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/seniorsmartassist/request/1/status",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"elderassist",
+										"request",
+										"1",
+										"status"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 1,\n  \"status\": \"completed\",\n  \"completed_at\": \"2025-01-18T21:00:00\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Elder Requests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/seniorsmartassist/elder/1/requests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"elderassist",
+								"elder",
+								"1",
+								"requests"
+							]
+						},
+						"description": "Get all help requests for a specific elder, including status and assigned volunteer information."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/seniorsmartassist/elder/1/requests",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"elderassist",
+										"elder",
+										"1",
+										"requests"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 1,\n    \"elder_id\": 1,\n    \"volunteer_id\": 2,\n    \"request_type\": \"groceries\",\n    \"status\": \"completed\",\n    \"lat\": 37.7649,\n    \"lng\": -122.4294,\n    \"timestamp\": \"2025-01-18T10:00:00\",\n    \"assigned_at\": \"2025-01-18T10:05:00\",\n    \"completed_at\": \"2025-01-18T11:30:00\"\n  }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Volunteer Requests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/seniorsmartassist/volunteer/1/requests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"elderassist",
+								"volunteer",
+								"1",
+								"requests"
+							]
+						},
+						"description": "Get all assigned requests for a specific volunteer, showing their active and completed assignments."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/seniorsmartassist/volunteer/1/requests",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"elderassist",
+										"volunteer",
+										"1",
+										"requests"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 2,\n    \"elder_id\": 3,\n    \"volunteer_id\": 1,\n    \"request_type\": \"medication\",\n    \"status\": \"in_progress\",\n    \"lat\": 37.7749,\n    \"lng\": -122.4194,\n    \"timestamp\": \"2025-01-18T14:00:00\",\n    \"assigned_at\": \"2025-01-18T14:10:00\",\n    \"completed_at\": null\n  }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Volunteers",
+			"item": [
+				{
+					"name": "Get All Volunteers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/seniorsmartassist/volunteers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"elderassist",
+								"volunteers"
+							]
+						},
+						"description": "Retrieve all registered volunteers"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/seniorsmartassist/volunteers",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"elderassist",
+										"volunteers"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 1,\n    \"name\": \"Alice\",\n    \"lat\": 37.7749,\n    \"lng\": -122.4194\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Bob\",\n    \"lat\": 37.7849,\n    \"lng\": -122.4094\n  }\n]"
+						}
+					]
+				},
+				{
+					"name": "Add Volunteer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Charlie\",\n  \"lat\": 37.7649,\n  \"lng\": -122.4294\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/seniorsmartassist/volunteer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"elderassist",
+								"volunteer"
+							]
+						},
+						"description": "Register a new volunteer with their location"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Charlie\",\n  \"lat\": 37.7649,\n  \"lng\": -122.4294\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/seniorsmartassist/volunteer",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"elderassist",
+										"volunteer"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 3\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "WebSocket Events (Documentation Only)",
+			"item": [
+				{
+					"name": "New Request Event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// WebSocket Event: new_request\n// This is for documentation only - use Socket.IO client to emit this event\n\n{\n  \"type\": \"groceries\",\n  \"lat\": 37.7749,\n  \"lng\": -122.4194\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "ws://{{base_url}}/socket.io/",
+							"protocol": "ws",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"socket.io",
+								""
+							]
+						},
+						"description": "WebSocket event to create a new help request. This will automatically assign the nearest volunteer.\n\n**Event Name:** `new_request`\n\n**Server Response Event:** `request_assigned`"
+					},
+					"response": []
+				},
+				{
+					"name": "Request Assigned Event",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "ws://{{base_url}}/socket.io/",
+							"protocol": "ws",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"socket.io",
+								""
+							]
+						},
+						"description": "Server broadcasts this event when a volunteer is assigned to a request.\n\n**Event Name:** `request_assigned`\n\n**Event Data:**\n```json\n{\n  \"request_id\": 1,\n  \"volunteer_id\": 2,\n  \"volunteer_name\": \"Bob\",\n  \"eta_min\": 15.5,\n  \"volunteer_lat\": 37.7849,\n  \"volunteer_lng\": -122.4094\n}\n```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Registration",
+			"item": [
+				{
+					"name": "Register as Volunteer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"phone\": \"555-0103\",\n  \"lat\": 37.7849,\n  \"lng\": -122.4194\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/seniorsmartassist/register/volunteer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"elderassist",
+								"register",
+								"volunteer"
+							]
+						},
+						"description": "Register a new user as a volunteer"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"phone\": \"555-0103\",\n  \"lat\": 37.7849,\n  \"lng\": -122.4194\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/seniorsmartassist/register/volunteer",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"elderassist",
+										"register",
+										"volunteer"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 3,\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"type\": \"volunteer\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Register as Elder",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Robert Brown\",\n  \"email\": \"robert@example.com\",\n  \"phone\": \"555-0203\",\n  \"address\": \"789 Pine St\",\n  \"age\": 70,\n  \"lat\": 37.7549,\n  \"lng\": -122.4494\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/seniorsmartassist/register/elder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"elderassist",
+								"register",
+								"elder"
+							]
+						},
+						"description": "Register a new user as an elder. Age must be 65 or older."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Robert Brown\",\n  \"email\": \"robert@example.com\",\n  \"phone\": \"555-0203\",\n  \"address\": \"789 Pine St\",\n  \"age\": 70,\n  \"lat\": 37.7549,\n  \"lng\": -122.4494\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/seniorsmartassist/register/elder",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"elderassist",
+										"register",
+										"elder"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 3,\n  \"name\": \"Robert Brown\",\n  \"email\": \"robert@example.com\",\n  \"age\": 70,\n  \"type\": \"elder\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get All Elders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/seniorsmartassist/elders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"elderassist",
+								"elders"
+							]
+						},
+						"description": "Retrieve all registered elders"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/seniorsmartassist/elders",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"elderassist",
+										"elders"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 1,\n    \"name\": \"Mary Johnson\",\n    \"email\": \"mary@example.com\",\n    \"phone\": \"555-0201\",\n    \"address\": \"123 Oak St\",\n    \"lat\": 37.7649,\n    \"lng\": -122.4294\n  }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Contributions",
+			"item": [
+				{
+					"name": "Add Contribution",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"contributor_name\": \"John Donor\",\n  \"contributor_email\": \"john.donor@example.com\",\n  \"amount\": 50.00,\n  \"message\": \"Thank you for your amazing service!\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/seniorsmartassist/contribution",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"elderassist",
+								"contribution"
+							]
+						},
+						"description": "Add a monetary contribution. Can be a general donation or designated for a specific volunteer."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"contributor_name\": \"John Donor\",\n  \"contributor_email\": \"john.donor@example.com\",\n  \"amount\": 50.00,\n  \"message\": \"Thank you for your amazing service!\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/seniorsmartassist/contribution",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"elderassist",
+										"contribution"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 1,\n  \"contributor_name\": \"John Donor\",\n  \"amount\": 50.00,\n  \"timestamp\": \"2025-11-18T20:00:00\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Add Contribution to Volunteer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"contributor_name\": \"Grateful Elder\",\n  \"contributor_email\": \"grateful@example.com\",\n  \"amount\": 25.00,\n  \"volunteer_id\": 1,\n  \"message\": \"Thank you for helping me with groceries!\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/seniorsmartassist/contribution",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"elderassist",
+								"contribution"
+							]
+						},
+						"description": "Add a contribution designated for a specific volunteer as a reward."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"contributor_name\": \"Grateful Elder\",\n  \"contributor_email\": \"grateful@example.com\",\n  \"amount\": 25.00,\n  \"volunteer_id\": 1,\n  \"message\": \"Thank you for helping me!\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/seniorsmartassist/contribution",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"elderassist",
+										"contribution"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 2,\n  \"contributor_name\": \"Grateful Elder\",\n  \"amount\": 25.00,\n  \"volunteer_id\": 1,\n  \"volunteer_name\": \"Alice Chen\",\n  \"timestamp\": \"2025-11-18T20:30:00\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get All Contributions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/seniorsmartassist/contributions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"elderassist",
+								"contributions"
+							]
+						},
+						"description": "Get all contributions in the system"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Volunteer Contributions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/seniorsmartassist/volunteer/1/contributions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"elderassist",
+								"volunteer",
+								"1",
+								"contributions"
+							]
+						},
+						"description": "Get all contributions for a specific volunteer with total amount"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/seniorsmartassist/volunteer/1/contributions",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"elderassist",
+										"volunteer",
+										"1",
+										"contributions"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"volunteer_id\": 1,\n  \"volunteer_name\": \"Alice Chen\",\n  \"total_contributions\": 75.00,\n  \"contribution_count\": 3,\n  \"contributions\": [\n    {\n      \"id\": 1,\n      \"contributor_name\": \"John Donor\",\n      \"amount\": 25.00,\n      \"message\": \"Great work!\",\n      \"timestamp\": \"2025-11-18T20:00:00\"\n    }\n  ]\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000",
+			"type": "string"
+		}
+	]
+}
