@@ -42,13 +42,15 @@ CORS_ORIGINS=https://your-vercel-app.vercel.app
 
 Railway should automatically detect:
 - **Root Directory**: `backend` (set this in Settings → Service → Root Directory)
-- **Build Command**: Automatically handled by nixpacks.toml
-- **Start Command**: `python run.py` (from Procfile)
+- **Build Command**: Automatically detects Python from `requirements.txt`
+- **Start Command**: Uses `Procfile` or `start.sh`
 
 If Railway doesn't detect automatically:
 1. Go to Settings → Service
 2. Set **Root Directory** to `backend`
-3. Railway will use the `nixpacks.toml` and `Procfile` for build/start commands
+3. Railway will auto-detect Python from `requirements.txt` and use `Procfile` for start command
+
+**Note**: Railway uses Railpack or Nixpacks to auto-detect your Python app. The `requirements.txt` file is key for detection.
 
 ### Step 5: Deploy
 
