@@ -27,7 +27,7 @@
     },
     "web": {
       "favicon": "./assets/elderassist_logo.png",
-      "bundler": "metro",
+      "bundler": "webpack",
       "output": "static"
     }
   }

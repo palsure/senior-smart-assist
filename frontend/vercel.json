@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "buildCommand": "npx expo export --platform web",
-  "outputDirectory": "dist",
+  "buildCommand": "EXPO_USE_WEBPACK=1 npx expo export:web",
+  "outputDirectory": "web-build",
   "installCommand": "npm install",
   "framework": null,
+  "env": {
+    "EXPO_USE_WEBPACK": "1"
+  },
   "rewrites": [
     {
       "source": "/(.*)",
