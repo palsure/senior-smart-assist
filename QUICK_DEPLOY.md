@@ -19,8 +19,8 @@
 2. Import your GitHub repo
 3. Configure:
    - Root Directory: `frontend`
-   - Build Command: `npm install && npx expo export:web`
-   - Output Directory: `web-build`
+   - Build Command: `npx expo export --platform web`
+   - Output Directory: `dist`
 4. Add environment variables:
    ```
    EXPO_PUBLIC_API_URL=https://your-railway-app.up.railway.app/api/seniorsmartassist
