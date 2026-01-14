@@ -27,7 +27,6 @@
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
-    "@expo/webpack-config": "^19.0.0",
     "@types/react": "~19.1.0",
     "typescript": "~5.9.2"
   },
