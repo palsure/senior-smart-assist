@@ -5,11 +5,33 @@ import { SignInProps, UserType, Elder, Volunteer } from '../types';
 import { signInStyles } from '../styles/signInStyles';
 import Logo from './Logo';
 
-const SignIn: React.FC<SignInProps> = ({ onSignIn, onRegister }) => {
+interface ExtendedSignInProps extends SignInProps {
+  onShowAbout?: () => void;
+}
+
+const SignIn: React.FC<ExtendedSignInProps> = ({ onSignIn, onRegister, onShowAbout }) => {
   const [username, setUsername] = useState('');
   const [userType, setUserType] = useState<UserType>('elder');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const handleDemoLogin = async (demoEmail: string, type: 'elder' | 'volunteer') => {
+    setError('');
+    setLoading(true);
+    try {
+      if (type === 'elder') {
+        const response = await loginElder(demoEmail);
+        onSignIn(response.data, 'elder');
+      } else {
+        const response = await loginVolunteer(demoEmail);
+        onSignIn(response.data, 'volunteer');
+      }
+    } catch (err: any) {
+      setError('Demo login failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async () => {
     setError('');
@@ -58,8 +80,15 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn, onRegister }) => {
     >
       <View style={signInStyles.card}>
         <View style={signInStyles.logoContainer}>
-          <Logo size={70} />
-          <Text style={signInStyles.title}>SeniorSmartAssist</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15 }}>
+            <Logo size={70} />
+            <Text style={signInStyles.title}>SeniorSmartAssist</Text>
+          </View>
+          {onShowAbout && (
+            <TouchableOpacity onPress={onShowAbout} style={signInStyles.aboutButton}>
+              <Text style={signInStyles.aboutButtonText}>ℹ️ About & Features</Text>
+            </TouchableOpacity>
+          )}
         </View>
 
         <View style={signInStyles.infoBox}>
@@ -146,14 +175,41 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn, onRegister }) => {
         </TouchableOpacity>
 
         {userType !== 'donor' && (
-          <View style={signInStyles.registerContainer}>
-            <Text style={signInStyles.registerText}>Don't have an account?</Text>
-            <TouchableOpacity onPress={() => onRegister(userType)} style={signInStyles.registerButton}>
-              <Text style={signInStyles.registerButtonText}>
-                Create {userType === 'elder' ? 'Senior Citizen' : 'Volunteer'} Account
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <>
+            <View style={signInStyles.demoContainer}>
+              <Text style={signInStyles.demoTitle}>🚀 Quick Demo Login:</Text>
+              {userType === 'elder' && (
+                <TouchableOpacity
+                  style={[signInStyles.demoButton, signInStyles.demoButtonElder]}
+                  onPress={() => handleDemoLogin('mary@example.com', 'elder')}
+                  disabled={loading}
+                >
+                  <Text style={signInStyles.demoButtonText}>
+                    🧓 Login as Mary Johnson (Demo Senior)
+                  </Text>
+                </TouchableOpacity>
+              )}
+              {userType === 'volunteer' && (
+                <TouchableOpacity
+                  style={[signInStyles.demoButton, signInStyles.demoButtonVolunteer]}
+                  onPress={() => handleDemoLogin('alice@example.com', 'volunteer')}
+                  disabled={loading}
+                >
+                  <Text style={signInStyles.demoButtonText}>
+                    🤝 Login as Alice Chen (Demo Volunteer)
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            <View style={signInStyles.registerContainer}>
+              <Text style={signInStyles.registerText}>Don't have an account?</Text>
+              <TouchableOpacity onPress={() => onRegister(userType)} style={signInStyles.registerButton}>
+                <Text style={signInStyles.registerButtonText}>
+                  Create {userType === 'elder' ? 'Senior Citizen' : 'Volunteer'} Account
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </>
         )}
       </View>
     </ScrollView>

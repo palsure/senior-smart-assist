@@ -16,6 +16,7 @@ import VolunteerProfile from './src/components/VolunteerProfile';
 import ElderRegistration from './src/components/ElderRegistration';
 import VolunteerRegistration from './src/components/VolunteerRegistration';
 import ContributionForm from './src/components/ContributionForm';
+import About from './src/components/About';
 import Logo from './src/components/Logo';
 import { getVolunteerRatings, VolunteerRatingsResponse } from './src/services/api';
 
@@ -29,6 +30,7 @@ export default function App() {
   const [showRegister, setShowRegister] = useState(false);
   const [registrationType, setRegistrationType] = useState<RegistrationType>('elder');
   const [isDonor, setIsDonor] = useState(false);
+  const [showAbout, setShowAbout] = useState(true); // Show About page by default
   const [totalContributions, setTotalContributions] = useState<number>(0);
   
   // Track if we should preserve Profile tab after update
@@ -68,6 +70,7 @@ export default function App() {
     setCurrentUser(null);
     setShowRegister(false);
     setIsDonor(false);
+    setShowAbout(true); // Return to About page after sign out
   };
 
   const handleShowRegister = (userType: 'elder' | 'volunteer' | 'donor') => {
@@ -95,6 +98,17 @@ export default function App() {
     }
   };
 
+  // Show About page by default (when not logged in and not showing register/donor)
+  if (showAbout && !currentUser && !showRegister && !isDonor) {
+    return (
+      <SafeAreaProvider>
+        <View style={appStyles.container}>
+          <About onBack={() => setShowAbout(false)} />
+        </View>
+      </SafeAreaProvider>
+    );
+  }
+
   // Show sign-in if not logged in
   if (!currentUser && !showRegister && !isDonor) {
     console.log('Rendering SignIn screen');
@@ -102,7 +116,11 @@ export default function App() {
       return (
         <SafeAreaProvider>
           <View style={appStyles.container}>
-            <SignIn onSignIn={handleSignIn} onRegister={handleShowRegister} />
+            <SignIn 
+              onSignIn={handleSignIn} 
+              onRegister={handleShowRegister}
+              onShowAbout={() => setShowAbout(true)}
+            />
           </View>
         </SafeAreaProvider>
       );
@@ -226,42 +244,44 @@ export default function App() {
         {/* Green Separator Line */}
         <View style={appStyles.separatorLine} />
         
-        {/* Top Tab Navigation */}
-        <View style={appStyles.topTabs}>
-          <TouchableOpacity
-            style={[appStyles.tabButton, activeTab === 'SubmitRequest' && appStyles.tabButtonActive]}
-            onPress={() => setActiveTab('SubmitRequest')}
-          >
-            <Text style={[appStyles.tabIcon, activeTab === 'SubmitRequest' && appStyles.tabIconActive]}>➕</Text>
-            <Text style={[appStyles.tabLabel, activeTab === 'SubmitRequest' && appStyles.tabLabelActive]}>
-              Submit Request
-            </Text>
-            {activeTab === 'SubmitRequest' && <View style={appStyles.tabIndicator} />}
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[appStyles.tabButton, activeTab === 'MyRequests' && appStyles.tabButtonActive]}
-            onPress={() => setActiveTab('MyRequests')}
-          >
-            <Text style={[appStyles.tabIcon, activeTab === 'MyRequests' && appStyles.tabIconActive]}>☰</Text>
-            <Text style={[appStyles.tabLabel, activeTab === 'MyRequests' && appStyles.tabLabelActive]}>
-              My Requests
-            </Text>
-            {activeTab === 'MyRequests' && <View style={appStyles.tabIndicator} />}
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[appStyles.tabButton, activeTab === 'Profile' && appStyles.tabButtonActive]}
-            onPress={() => setActiveTab('Profile')}
-          >
-            <Text style={[appStyles.tabIcon, activeTab === 'Profile' && appStyles.tabIconActive]}>👤</Text>
-            <Text style={[appStyles.tabLabel, activeTab === 'Profile' && appStyles.tabLabelActive]}>
-              My Profile
-            </Text>
-            {activeTab === 'Profile' && <View style={appStyles.tabIndicator} />}
-          </TouchableOpacity>
-        </View>
-        
-        {/* Tab Content */}
-        <View style={{ flex: 1 }}>
+        {/* Main Content Area with Left Sidebar */}
+        <View style={appStyles.mainContentContainer}>
+          {/* Left Side Tab Navigation */}
+          <View style={appStyles.leftTabs}>
+            <TouchableOpacity
+              style={[appStyles.leftTabButton, activeTab === 'SubmitRequest' && appStyles.leftTabButtonActive]}
+              onPress={() => setActiveTab('SubmitRequest')}
+            >
+              {activeTab === 'SubmitRequest' && <View style={appStyles.leftTabIndicator} />}
+              <Text style={[appStyles.tabIcon, activeTab === 'SubmitRequest' && appStyles.tabIconActive]}>➕</Text>
+              <Text style={[appStyles.tabLabel, activeTab === 'SubmitRequest' && appStyles.tabLabelActive]}>
+                Submit Request
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[appStyles.leftTabButton, activeTab === 'MyRequests' && appStyles.leftTabButtonActive]}
+              onPress={() => setActiveTab('MyRequests')}
+            >
+              {activeTab === 'MyRequests' && <View style={appStyles.leftTabIndicator} />}
+              <Text style={[appStyles.tabIcon, activeTab === 'MyRequests' && appStyles.tabIconActive]}>☰</Text>
+              <Text style={[appStyles.tabLabel, activeTab === 'MyRequests' && appStyles.tabLabelActive]}>
+                My Requests
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[appStyles.leftTabButton, activeTab === 'Profile' && appStyles.leftTabButtonActive]}
+              onPress={() => setActiveTab('Profile')}
+            >
+              {activeTab === 'Profile' && <View style={appStyles.leftTabIndicator} />}
+              <Text style={[appStyles.tabIcon, activeTab === 'Profile' && appStyles.tabIconActive]}>👤</Text>
+              <Text style={[appStyles.tabLabel, activeTab === 'Profile' && appStyles.tabLabelActive]}>
+                My Profile
+              </Text>
+            </TouchableOpacity>
+          </View>
+          
+          {/* Tab Content */}
+          <View style={appStyles.tabContentArea}>
           {activeTab === 'SubmitRequest' && (
             <RequestForm
               address={currentUser!.user.address}
@@ -281,6 +301,7 @@ export default function App() {
               onUpdate={handleProfileUpdateWithTabPreservation}
             />
           )}
+          </View>
         </View>
       </View>
     );
@@ -304,26 +325,28 @@ export default function App() {
       }
     }, [currentUser]);
 
-    // Load volunteer ratings
-    React.useEffect(() => {
-      const loadRatings = async () => {
-        if (currentUser?.user.id && currentUser.type === 'volunteer') {
-          try {
-            setRatingsLoading(true);
-            const response = await getVolunteerRatings(currentUser.user.id);
-            setVolunteerRatings(response.data);
-          } catch (err) {
-            console.error('Failed to load volunteer ratings:', err);
-          } finally {
-            setRatingsLoading(false);
-          }
+    // Load volunteer ratings function (exposed for manual refresh)
+    const loadRatings = React.useCallback(async () => {
+      if (currentUser?.user.id && currentUser.type === 'volunteer') {
+        try {
+          setRatingsLoading(true);
+          const response = await getVolunteerRatings(currentUser.user.id);
+          setVolunteerRatings(response.data);
+        } catch (err) {
+          console.error('Failed to load volunteer ratings:', err);
+        } finally {
+          setRatingsLoading(false);
         }
-      };
+      }
+    }, [currentUser]);
+
+    // Load volunteer ratings on mount and set up auto-refresh
+    React.useEffect(() => {
       loadRatings();
       // Refresh ratings every 10 seconds
       const interval = setInterval(loadRatings, 10000);
       return () => clearInterval(interval);
-    }, [currentUser]);
+    }, [loadRatings]);
     
     return (
       <View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -353,7 +376,7 @@ export default function App() {
         {/* Green Separator Line */}
         <View style={appStyles.separatorLine} />
         
-        {/* Overall Rating and Total Rewards Display */}
+        {/* Overall Rating, Total Requests, and Total Rewards Display */}
         {volunteerRatings && (
           <View style={appStyles.overallRatingContainer}>
             {volunteerRatings.overall_rating !== null && (
@@ -368,6 +391,11 @@ export default function App() {
                 <Text style={appStyles.overallRatingSeparator}> | </Text>
               </>
             )}
+            <Text style={appStyles.totalRequestsLabel}>Total Requests:</Text>
+            <Text style={appStyles.totalRequestsValue}>
+              {volunteerRatings.total_requests || 0}
+            </Text>
+            <Text style={appStyles.overallRatingSeparator}> | </Text>
             <Text style={appStyles.totalRewardsLabel}>Total Rewards:</Text>
             <Text style={appStyles.totalRewardsValue}>
               ${(volunteerRatings.total_rewards || 0).toFixed(2)}
@@ -375,42 +403,44 @@ export default function App() {
           </View>
         )}
         
-        {/* Top Tab Navigation */}
-        <View style={appStyles.topTabs}>
-          <TouchableOpacity
-            style={[appStyles.tabButton, activeTab === 'AvailableRequests' && appStyles.tabButtonActive]}
-            onPress={() => setActiveTab('AvailableRequests')}
-          >
-            <Text style={[appStyles.tabIcon, activeTab === 'AvailableRequests' && appStyles.tabIconActive]}>☰</Text>
-            <Text style={[appStyles.tabLabel, activeTab === 'AvailableRequests' && appStyles.tabLabelActive]}>
-              Available Requests
-            </Text>
-            {activeTab === 'AvailableRequests' && <View style={appStyles.tabIndicator} />}
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[appStyles.tabButton, activeTab === 'MyRequests' && appStyles.tabButtonActive]}
-            onPress={() => setActiveTab('MyRequests')}
-          >
-            <Text style={[appStyles.tabIcon, activeTab === 'MyRequests' && appStyles.tabIconActive]}>📋</Text>
-            <Text style={[appStyles.tabLabel, activeTab === 'MyRequests' && appStyles.tabLabelActive]}>
-              My Requests
-            </Text>
-            {activeTab === 'MyRequests' && <View style={appStyles.tabIndicator} />}
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[appStyles.tabButton, activeTab === 'Profile' && appStyles.tabButtonActive]}
-            onPress={() => setActiveTab('Profile')}
-          >
-            <Text style={[appStyles.tabIcon, activeTab === 'Profile' && appStyles.tabIconActive]}>👤</Text>
-            <Text style={[appStyles.tabLabel, activeTab === 'Profile' && appStyles.tabLabelActive]}>
-              My Profile
-            </Text>
-            {activeTab === 'Profile' && <View style={appStyles.tabIndicator} />}
-          </TouchableOpacity>
-        </View>
-        
-        {/* Tab Content */}
-        <View style={{ flex: 1 }}>
+        {/* Main Content Area with Left Sidebar */}
+        <View style={appStyles.mainContentContainer}>
+          {/* Left Side Tab Navigation */}
+          <View style={appStyles.leftTabs}>
+            <TouchableOpacity
+              style={[appStyles.leftTabButton, activeTab === 'AvailableRequests' && appStyles.leftTabButtonActive]}
+              onPress={() => setActiveTab('AvailableRequests')}
+            >
+              {activeTab === 'AvailableRequests' && <View style={appStyles.leftTabIndicator} />}
+              <Text style={[appStyles.tabIcon, activeTab === 'AvailableRequests' && appStyles.tabIconActive]}>☰</Text>
+              <Text style={[appStyles.tabLabel, activeTab === 'AvailableRequests' && appStyles.tabLabelActive]}>
+                Available Requests
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[appStyles.leftTabButton, activeTab === 'MyRequests' && appStyles.leftTabButtonActive]}
+              onPress={() => setActiveTab('MyRequests')}
+            >
+              {activeTab === 'MyRequests' && <View style={appStyles.leftTabIndicator} />}
+              <Text style={[appStyles.tabIcon, activeTab === 'MyRequests' && appStyles.tabIconActive]}>📋</Text>
+              <Text style={[appStyles.tabLabel, activeTab === 'MyRequests' && appStyles.tabLabelActive]}>
+                My Requests
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[appStyles.leftTabButton, activeTab === 'Profile' && appStyles.leftTabButtonActive]}
+              onPress={() => setActiveTab('Profile')}
+            >
+              {activeTab === 'Profile' && <View style={appStyles.leftTabIndicator} />}
+              <Text style={[appStyles.tabIcon, activeTab === 'Profile' && appStyles.tabIconActive]}>👤</Text>
+              <Text style={[appStyles.tabLabel, activeTab === 'Profile' && appStyles.tabLabelActive]}>
+                My Profile
+              </Text>
+            </TouchableOpacity>
+          </View>
+          
+          {/* Tab Content */}
+          <View style={appStyles.tabContentArea}>
           {activeTab === 'AvailableRequests' && (
             <RequestList 
               isVolunteerView={true} 
@@ -418,6 +448,7 @@ export default function App() {
               currentUserId={currentUser?.user.id}
               currentUserType="volunteer"
               showMyRequests={false}
+              onRequestCompleted={loadRatings}
             />
           )}
           {activeTab === 'MyRequests' && (
@@ -427,6 +458,7 @@ export default function App() {
               currentUserId={currentUser?.user.id}
               currentUserType="volunteer"
               showMyRequests={true}
+              onRequestCompleted={loadRatings}
             />
           )}
           {activeTab === 'Profile' && (
@@ -435,6 +467,7 @@ export default function App() {
               onUpdate={handleVolunteerProfileUpdateWithTabPreservation}
             />
           )}
+          </View>
         </View>
       </View>
     );

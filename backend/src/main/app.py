@@ -20,10 +20,16 @@ def create_app(test_config=None):
     else:
         app.config.update(test_config)
     
-    CORS(app)
+    # Configure CORS - allow all origins in development, specific origins in production
+    cors_origins = os.getenv('CORS_ORIGINS', '*')
+    if cors_origins == '*':
+        CORS(app)
+    else:
+        CORS(app, origins=cors_origins.split(','))
+    
     db.init_app(app)
     
-    socketio = SocketIO(app, cors_allowed_origins="*")
+    socketio = SocketIO(app, cors_allowed_origins=cors_origins.split(',') if cors_origins != '*' else '*')
     app.extensions['socketio'] = socketio
     register_socket_events(socketio)
     app.register_blueprint(api_bp, url_prefix='/api/seniorsmartassist')

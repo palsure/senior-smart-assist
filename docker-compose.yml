@@ -1,0 +1,43 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: senior-smart-assist-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      # Mount the database directory to persist data
+      - ./backend/instance:/app/instance
+      # Mount source code for development (optional - remove in production)
+      - ./backend/src:/app/src
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=sqlite:////app/instance/seniorsmartassist.db
+    restart: unless-stopped
+    networks:
+      - senior-smart-assist-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: senior-smart-assist-frontend
+    ports:
+      - "19006:19006"
+    volumes:
+      # Mount source code for development (hot reload)
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - REACT_NATIVE_PACKAGER_HOSTNAME=0.0.0.0
+      - EXPO_NO_DOTENV=1
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - senior-smart-assist-network
+
+networks:
+  senior-smart-assist-network:
+    driver: bridge

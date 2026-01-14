@@ -38,11 +38,23 @@ export const signInStyles = StyleSheet.create({
     elevation: 4,
   },
   logoContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 30,
     gap: 15,
+  },
+  aboutButton: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: '#e3f2fd',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#2196F3',
+  },
+  aboutButtonText: {
+    color: '#2196F3',
+    fontSize: 14,
+    fontWeight: '600',
   },
   title: {
     fontSize: 28,
@@ -218,6 +230,45 @@ export const signInStyles = StyleSheet.create({
     color: '#fff',
     fontSize: 15,
     fontWeight: 'bold',
+  },
+  demoContainer: {
+    width: '100%',
+    marginBottom: 20,
+    padding: 15,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  demoTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  demoButton: {
+    width: '100%',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#ddd',
+    backgroundColor: '#fff',
+  },
+  demoButtonElder: {
+    backgroundColor: '#e8f5e9',
+    borderColor: '#4CAF50',
+  },
+  demoButtonVolunteer: {
+    backgroundColor: '#e3f2fd',
+    borderColor: '#2196F3',
+  },
+  demoButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
   },
 });
 

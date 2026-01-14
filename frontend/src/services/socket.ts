@@ -14,9 +14,20 @@ const getPlatformOS = (): string => {
 };
 
 const getSocketURL = () => {
+  // Check for environment variable (production/Docker/containerized environments)
+  if (typeof process !== 'undefined' && process.env.EXPO_PUBLIC_SOCKET_URL) {
+    return process.env.EXPO_PUBLIC_SOCKET_URL;
+  }
+  
+  // Check for Vercel environment variable
+  if (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_SOCKET_URL) {
+    return process.env.NEXT_PUBLIC_SOCKET_URL;
+  }
+  
   try {
     if (getPlatformOS() === 'web') {
-      return "http://localhost:5000";
+      // In production (Vercel), use environment variable or default to localhost for development
+      return process.env.EXPO_PUBLIC_SOCKET_URL || "http://localhost:5000";
     }
   } catch (e) {
     // Fall through to default

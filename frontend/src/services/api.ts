@@ -15,9 +15,20 @@ const getPlatformOS = (): string => {
 
 // Use localhost for web, 10.0.2.2 for Android emulator, or your machine's IP for physical device
 const getBaseURL = () => {
+  // Check for environment variable (production/Docker/containerized environments)
+  if (typeof process !== 'undefined' && process.env.EXPO_PUBLIC_API_URL) {
+    return process.env.EXPO_PUBLIC_API_URL;
+  }
+  
+  // Check for Vercel environment variable
+  if (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  
   try {
     if (getPlatformOS() === 'web') {
-      return "http://localhost:5000/api/seniorsmartassist";
+      // In production (Vercel), use environment variable or default to localhost for development
+      return process.env.EXPO_PUBLIC_API_URL || "http://localhost:5000/api/seniorsmartassist";
     }
   } catch (e) {
     // Fall through to default
@@ -182,6 +193,7 @@ export interface VolunteerRatingsResponse {
   overall_rating: number | null;
   total_ratings: number;
   total_rewards: number;
+  total_requests: number;
   ratings: VolunteerRating[];
 }
 

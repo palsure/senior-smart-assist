@@ -27,9 +27,10 @@ interface RequestListProps {
   currentUserId?: number;
   currentUserType?: 'elder' | 'volunteer';
   showMyRequests?: boolean; // For volunteer's assigned/completed requests
+  onRequestCompleted?: () => void; // Callback when a request is completed (for refreshing ratings)
 }
 
-const RequestList: React.FC<RequestListProps> = ({ isVolunteerView = false, currentVolunteerId, currentUserId, currentUserType, showMyRequests = false }) => {
+const RequestList: React.FC<RequestListProps> = ({ isVolunteerView = false, currentVolunteerId, currentUserId, currentUserType, showMyRequests = false, onRequestCompleted }) => {
   // Check if we're on web platform (lazy check using ref to avoid issues during module load)
   const isWebRef = useRef<boolean | null>(null);
   if (isWebRef.current === null) {
@@ -396,6 +397,14 @@ const RequestList: React.FC<RequestListProps> = ({ isVolunteerView = false, curr
       
       const response = await updateRequestStatus(requestId, newStatus, wantsReward);
       await loadData();
+      
+      // If request was completed, refresh ratings to show updated rewards
+      if (newStatus === 'completed' && onRequestCompleted) {
+        // Small delay to ensure backend has committed the reward
+        setTimeout(() => {
+          onRequestCompleted();
+        }, 500);
+      }
       
       const statusMessages: { [key: string]: string } = {
         'assigned': 'Request marked as assigned!',

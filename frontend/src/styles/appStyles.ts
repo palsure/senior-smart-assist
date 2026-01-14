@@ -96,6 +96,40 @@ export const appStyles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 14,
   },
+  mainContentContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  leftTabs: {
+    width: 180,
+    backgroundColor: '#f8f9fa',
+    borderRightWidth: 1,
+    borderRightColor: '#e0e0e0',
+    paddingTop: 10,
+  },
+  leftTabButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    position: 'relative',
+    borderLeftWidth: 0,
+  },
+  leftTabButtonActive: {
+    backgroundColor: '#e8f5e9',
+  },
+  leftTabIndicator: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 4,
+    backgroundColor: '#4CAF50',
+  },
+  tabContentArea: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   topTabs: {
     flexDirection: 'row',
     backgroundColor: '#fff',
@@ -116,7 +150,7 @@ export const appStyles = StyleSheet.create({
   },
   tabIcon: {
     fontSize: 18,
-    marginRight: 6,
+    marginRight: 8,
     color: '#666',
   },
   tabIconActive: {
@@ -167,6 +201,16 @@ export const appStyles = StyleSheet.create({
     fontSize: 16,
     color: '#999',
     marginHorizontal: 5,
+  },
+  totalRequestsLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  totalRequestsValue: {
+    fontSize: 16,
+    color: '#2196F3',
+    fontWeight: 'bold',
   },
   totalRewardsLabel: {
     fontSize: 16,

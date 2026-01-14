@@ -702,14 +702,13 @@ def get_volunteer_ratings(volunteer_id):
     # Calculate overall rating
     overall_rating = round(total_rating / rating_count, 2) if rating_count > 0 else None
     
-    # Calculate total rewards - only from completed requests
+    # Calculate total rewards for this volunteer
+    # Count all rewards assigned to this volunteer (rewards are only created for completed requests)
     rewards = Reward.query.filter_by(volunteer_id=volunteer_id).all()
-    total_rewards = 0.0
-    for reward in rewards:
-        # Only count rewards for completed requests
-        request = HelpRequest.query.get(reward.request_id)
-        if request and request.status == 'completed':
-            total_rewards += reward.amount
+    total_rewards = sum(reward.amount for reward in rewards)
+    
+    # Calculate total requests (all assigned requests, not just completed)
+    total_requests = HelpRequest.query.filter_by(volunteer_id=volunteer_id).count()
     
     return jsonify({
         'volunteer_id': volunteer_id,
@@ -717,6 +716,7 @@ def get_volunteer_ratings(volunteer_id):
         'overall_rating': overall_rating,
         'total_ratings': rating_count,
         'total_rewards': round(total_rewards, 2),
+        'total_requests': total_requests,
         'ratings': ratings
     }), 200
 

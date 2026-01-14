@@ -14,14 +14,20 @@ from src.main.app import create_app
 
 if __name__ == '__main__':
     app, socketio = create_app()
+    
+    # Get port from environment variable (Railway provides PORT)
+    port = int(os.getenv('PORT', 5000))
+    host = os.getenv('HOST', '0.0.0.0')
+    debug = os.getenv('FLASK_ENV') == 'development'
+    
     print("=" * 60)
     print("🚀 SeniorSmartAssist Backend Server")
     print("=" * 60)
     print(f"📊 Database: {app.config['SQLALCHEMY_DATABASE_URI']}")
-    print(f"🌐 Server: http://0.0.0.0:5000")
-    print(f"📡 WebSocket: ws://0.0.0.0:5000/socket.io/")
+    print(f"🌐 Server: http://{host}:{port}")
+    print(f"📡 WebSocket: ws://{host}:{port}/socket.io/")
     print("=" * 60)
     print("Press CTRL+C to stop the server")
     print()
     
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host=host, port=port, debug=debug)
